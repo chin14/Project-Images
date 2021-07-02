@@ -31,6 +31,16 @@ const imageSize = new Promise( (resolve, reject) =>{
   }
 });
 
+fs.stat('./www/images/', (err, stats) => {
+  if(err) {
+      throw err;
+  }
+
+  // print file last modified date
+  console.log(`File Data Last Modified: ${stats.mtime}`);
+  console.log(`File Status Last Modified: ${stats.ctime}`);
+});
+
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
   });
