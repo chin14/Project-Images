@@ -29,6 +29,9 @@
         margin-right: 450px;
         
     }
+    a{
+        color: white;
+    }
 
     /* tr > th{
         padding: 0 50px;
@@ -43,4 +46,8 @@
         border-bottom: 1px solid gray;
         margin-left: 35px;
         width: 71.8%;
+    }
+    td{
+        text-align: center;
+        color: gray;
     }
