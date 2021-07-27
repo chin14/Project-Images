@@ -4,8 +4,9 @@ const fs = require('fs');
 const port = 5000;
 const path = require('path');
 const imageSize = require('image-size');
+const { error } = require('console');
 
-app.use('/images', express.static('www/images'));
+app.use(express.static(path.join(__dirname, 'www/images')));
 app.use(express.static(path.join(__dirname, 'view')));
 
 //first promise
@@ -32,21 +33,32 @@ const allSize = new Promise( (resolve, reject) =>{
   }
 });
 
-
 const getTimeChange = new Promise((resolve, reject) =>{
   const getFile = path.join(__dirname, './www/images');
-  if(!getFile){
+  const stats = path.join(__dirname, './www/images')
+  fs.readdir(getFile, (error, stats))
+  if(error){
     console.log('Ups Something went wrong');
   }else{
-    for (let i = 0; i < getFile.length; i++) {
-      const stats = fs.stat(getFile[i]);
-      if (stats !== '.DS_Store') {
-          console.log(stats.mtime + stats.ctime)
+    fs.stat(getFile, (err, stats) =>{
+      if(err){
+        console.log(err)
+      }else{
+        stats.forEach((stats)=>{
+          if(stats !== '.DS_Store'){
+            return console.log(stats) 
+          }
+        })
       }
+    })
+    // for (let i = 0; i < getFile.length; i++) {
+    //   const stats = fs.stat(getFile[i]);
+    //   if (stats !== '.DS_Store') {
+    //       console.log(stats.mtime + stats.ctime)
+    //   }
   }
-  }
- });
- 
+ })
+
 
 const Datainformation = new Promise((resolve, reject) =>{
   const fileName = path.join(__dirname, './www/images');
@@ -58,7 +70,7 @@ const Datainformation = new Promise((resolve, reject) =>{
       const Array = [];
       files.forEach((files)=>{
         if(files !== '.DS_Store'){
-          return  console.log(Array.push({name: files, imageSize: imageSize('www/images/' + files), getTimeChange: stats.ctime(path.join(__dirname, './www/images'))})); 
+          return  console.log(Array.push({name: files, imageSize: imageSize('www/images/' + files ), getTimeChange })); 
         }
       })
         console.log(Array);
@@ -68,6 +80,8 @@ const Datainformation = new Promise((resolve, reject) =>{
  });
     
 })
+
+
 
 
 
